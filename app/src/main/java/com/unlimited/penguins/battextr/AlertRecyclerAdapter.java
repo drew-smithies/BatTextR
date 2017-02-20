@@ -1,31 +1,36 @@
 package com.unlimited.penguins.battextr;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by Drew on 2/19/2017.
  */
 
-public class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.ViewHolder> {
+class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.ViewHolder> {
     private String[] mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
-        public ViewHolder(TextView v) {
+        CardView mCardView;
+        TextView mTextView;
+        ViewHolder(CardView v) {
             super(v);
-            mTextView = v;
+            mCardView = v;
+            mTextView = (TextView) v.findViewById(R.id.card_text);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AlertRecyclerAdapter(String[] myDataset) {
+    AlertRecyclerAdapter(String[] myDataset) {
         mDataset = myDataset;
     }
 
@@ -34,8 +39,8 @@ public class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdap
     public AlertRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
         // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.alert_card_text, parent, false);
+        CardView v = (CardView) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.alert_card, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
