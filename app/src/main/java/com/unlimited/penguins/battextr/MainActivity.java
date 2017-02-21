@@ -10,10 +10,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,10 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 //Remove swiped item from list and notify the RecyclerView
                 int swipePosition = viewHolder.getAdapterPosition();
-                myDataset.remove(swipePosition);
-                mAdapter.notifyItemRemoved(swipePosition);
-                mAdapter.notifyItemChanged(swipePosition);
-                mAdapter.notifyItemRangeChanged(swipePosition, myDataset.size());
+                mAdapter.removeItem(swipePosition);
             }
 
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -78,7 +77,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Add item to recycler view
-                mAdapter.addItem("test");
+                try {
+                    mAdapter.addItem("test", view.getContext());
+                } catch (IOException e) {
+                    Log.d("Drew", "onClick: broke");
+                }
             }
         });
     }

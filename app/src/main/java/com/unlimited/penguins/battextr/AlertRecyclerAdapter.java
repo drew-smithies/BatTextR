@@ -1,14 +1,20 @@
 package com.unlimited.penguins.battextr;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Drew on 2/19/2017.
@@ -57,15 +63,30 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
         holder.mTextView.setText(mDataset.get(position));
     }
 
-    public void addItem(String item){
-        mDataset.add(item);
-        notifyItemInserted(mDataset.size()-1);
-    }
-
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    // Add item to data set
+    public void addItem(String item, Context context) throws IOException {
+        // Save to internal storage
+        try {
+            FileOutputStream fos = context.openFileOutput(context.getString(R.string.save_alerts_file), Context.MODE_APPEND);
+            fos.write(item.getBytes());
+        } catch (IOException e) {
+            Log.d("Drew", "addItem: broke");
+        }
+        mDataset.add(item);
+        notifyItemInserted(mDataset.size()-1);
+    }
+    
+    // Remove item from dataset
+    public void removeItem(int position) {
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mDataset.size());
     }
 }
 
