@@ -9,15 +9,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private static String[] myDataset = new String[3];
+    private static ArrayList<String> myDataset = new ArrayList<String>();
 
 
     @Override
@@ -26,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Test data
-        myDataset[0] = "Hello";
-        myDataset[1] = "World";
-        myDataset[2] = "Bluah";
+        myDataset.add("Hello");
+        myDataset.add("World");
+        myDataset.add("Bluah");
 
         // Setup recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -44,6 +48,26 @@ public class MainActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         mAdapter = new AlertRecyclerAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
+
+        // Setup swipe touch helper
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                //Remove swiped item from list and notify the RecyclerView
+                int swipePosition = viewHolder.getAdapterPosition();
+                mAdapter.notifyItemChanged(swipePosition);
+                mAdapter.notifyItemRemoved(swipePosition);
+                mAdapter.notifyItemRangeChanged(swipePosition, myDataset.size()-1);
+            }
+
+            public boolean onMove(RecyclerView recyclerView,
+                                           RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return true;
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

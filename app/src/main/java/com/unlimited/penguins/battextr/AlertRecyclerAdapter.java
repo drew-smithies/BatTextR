@@ -6,14 +6,16 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Drew on 2/19/2017.
  */
 
 class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.ViewHolder> {
-    private String[] mDataset;
+    private ArrayList<String> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -22,6 +24,7 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
         // each data item is just a string in this case
         CardView mCardView;
         TextView mTextView;
+
         ViewHolder(CardView v) {
             super(v);
             mCardView = v;
@@ -30,7 +33,7 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    AlertRecyclerAdapter(String[] myDataset) {
+    AlertRecyclerAdapter(ArrayList<String> myDataset) {
         mDataset = myDataset;
     }
 
@@ -51,14 +54,21 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset[position]);
+        holder.mTextView.setText(mDataset.get(position));
 
+    }
+
+    // Remove item
+    public void removeAt(int position) {
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mDataset.size());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 }
 
