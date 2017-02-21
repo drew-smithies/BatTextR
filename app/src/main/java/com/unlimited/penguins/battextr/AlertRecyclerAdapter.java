@@ -55,7 +55,11 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset.get(position));
+    }
 
+    public void addItem(String item){
+        mDataset.add(item);
+        notifyItemInserted(mDataset.size()-1);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

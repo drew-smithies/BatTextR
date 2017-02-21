@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private AlertRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<String> myDataset = new ArrayList<String>();
 
@@ -56,16 +56,15 @@ public class MainActivity extends AppCompatActivity {
                 //Remove swiped item from list and notify the RecyclerView
                 int swipePosition = viewHolder.getAdapterPosition();
                 myDataset.remove(swipePosition);
+                mAdapter.notifyItemRemoved(swipePosition);
                 mAdapter.notifyItemChanged(swipePosition);
                 mAdapter.notifyItemRangeChanged(swipePosition, myDataset.size());
             }
 
-            public boolean onMove(RecyclerView recyclerView,
-                                           RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return true;
             }
         };
-
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
@@ -78,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // Add item to recycler view
+                mAdapter.addItem("test");
             }
         });
     }
