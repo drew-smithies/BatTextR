@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private static ArrayList<String> myDataset = new ArrayList<String>();
+    private ArrayList<String> myDataset = new ArrayList<String>();
 
 
     @Override
@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 //Remove swiped item from list and notify the RecyclerView
                 int swipePosition = viewHolder.getAdapterPosition();
+                myDataset.remove(swipePosition);
                 mAdapter.notifyItemChanged(swipePosition);
-                mAdapter.notifyItemRemoved(swipePosition);
-                mAdapter.notifyItemRangeChanged(swipePosition, myDataset.size()-1);
+                mAdapter.notifyItemRangeChanged(swipePosition, myDataset.size());
             }
 
             public boolean onMove(RecyclerView recyclerView,

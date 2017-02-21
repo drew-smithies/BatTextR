@@ -58,13 +58,6 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
 
     }
 
-    // Remove item
-    public void removeAt(int position) {
-        mDataset.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mDataset.size());
-    }
-
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
