@@ -8,8 +8,14 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +82,8 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
         // Save to internal storage
         try {
             FileOutputStream fos = mContext.openFileOutput(mContext.getString(R.string.save_alerts_file), Context.MODE_APPEND);
-            fos.write(item.getName().getBytes());
+            String writeString = item.getString() + System.getProperty("line.separator");
+            fos.write(writeString.getBytes());
         } catch (IOException e) {
             Log.d("Drew", "addItem: broke");
         }

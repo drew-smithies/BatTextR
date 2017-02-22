@@ -4,15 +4,27 @@ package com.unlimited.penguins.battextr;
  * Created by Drew on 2/22/2017.
  */
 
-class AlertItem {
+class AlertItem extends Object {
+    String mObjectString;
     String mName;
     String mType;
     String mDetail;
+
+    public String getString(){
+        return mName + '&' + mType + '&' + mDetail;
+    }
 
     public AlertItem(String name, String type, String detail){
         mName = name;
         mType = type;
         mDetail = detail;
+    }
+
+    public AlertItem(String concatString) {
+        String[] attr = concatString.split("&");
+        mName = attr[0];
+        mType = attr[1];
+        mDetail = attr[2];
     }
 
     public void setName(String name) {

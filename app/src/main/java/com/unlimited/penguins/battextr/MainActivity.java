@@ -15,7 +15,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,16 +35,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Test data
-        myDataset.add(new AlertItem("John Smith", "email", "jsmith@me.com"));
-        myDataset.add(new AlertItem("Mike Ross", "text", "903 352 6453"));
-        myDataset.add(new AlertItem("Mary Jewel", "text", "909 736 2342"));
+//        myDataset.add(new AlertItem("John Smith", "email", "jsmith@me.com"));
+//        myDataset.add(new AlertItem("Mike Ross", "text", "903 352 6453"));
+//        myDataset.add(new AlertItem("Mary Jewel", "text", "909 736 2342"));
+
+        loadSavedAlerts();
 
         // Setup recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
@@ -106,5 +111,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    // Load saved data
+    public void loadSavedAlerts() {
+        try {
+            InputStream stream = this.openFileInput(this.getString(R.string.save_alerts_file));
+            if(stream != null) {
+                InputStreamReader isr = new InputStreamReader(stream);
+                BufferedReader br = new BufferedReader(isr);
+                String currentLine;
+                StringBuilder builder = new StringBuilder();
+
+                while((currentLine = br.readLine()) != null) {
+                    myDataset.add(new AlertItem(currentLine));
+                    Log.d("Drew", "loadSavedAlerts: line" + currentLine);
+                }
+            }
+        } catch (IOException e) {
+
+        }
     }
 }
