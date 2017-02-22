@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private AlertRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<String> myDataset = new ArrayList<String>();
+    private ArrayList<AlertItem> myDataset = new ArrayList<AlertItem>();
 
 
     @Override
@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Test data
-        myDataset.add("Hello");
-        myDataset.add("World");
-        myDataset.add("Bluah");
+        myDataset.add(new AlertItem("John Smith", "email", "jsmith@me.com"));
+        myDataset.add(new AlertItem("Mike Ross", "text", "903 352 6453"));
+        myDataset.add(new AlertItem("Mary Jewel", "text", "909 736 2342"));
 
         // Setup recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new AlertRecyclerAdapter(myDataset);
+        mAdapter = new AlertRecyclerAdapter(MainActivity.this, myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
         // Setup swipe touch helper
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Add item to recycler view
                 try {
-                    mAdapter.addItem("test", view.getContext());
+                    mAdapter.addItem(new AlertItem("Drew Test", "email", "dtest@me.com"));
                 } catch (IOException e) {
                     Log.d("Drew", "onClick: broke");
                 }

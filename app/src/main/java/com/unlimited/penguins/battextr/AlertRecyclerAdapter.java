@@ -21,7 +21,8 @@ import static android.content.ContentValues.TAG;
  */
 
 class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.ViewHolder> {
-    private ArrayList<String> mDataset;
+    private ArrayList<AlertItem> mDataset;
+    private Context mContext;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -39,7 +40,8 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    AlertRecyclerAdapter(ArrayList<String> myDataset) {
+    AlertRecyclerAdapter(Context context, ArrayList<AlertItem> myDataset) {
+        mContext = context;
         mDataset = myDataset;
     }
 
@@ -60,7 +62,7 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset.get(position));
+        holder.mTextView.setText(mDataset.get(position).getName());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -70,11 +72,11 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     }
 
     // Add item to data set
-    public void addItem(String item, Context context) throws IOException {
+    public void addItem(AlertItem item) throws IOException {
         // Save to internal storage
         try {
-            FileOutputStream fos = context.openFileOutput(context.getString(R.string.save_alerts_file), Context.MODE_APPEND);
-            fos.write(item.getBytes());
+            FileOutputStream fos = mContext.openFileOutput(mContext.getString(R.string.save_alerts_file), Context.MODE_APPEND);
+            fos.write(item.getName().getBytes());
         } catch (IOException e) {
             Log.d("Drew", "addItem: broke");
         }
