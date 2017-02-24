@@ -3,4 +3,16 @@
     <string name="action_settings">Settings</string>
 
     <string name="save_alerts_file">savedAlerts</string>
+
+    <!-- SQL Database strings -->
+    <string name="sql_database_name">BatTextR_DB</string>
+    <string name="sql_table_name">alerts</string>
+    <string name="sql_column_contact_name">contactName</string>
+    <string name="sql_column_contact_name_type">TEXT</string>
+    <string name="sql_column_contact_detail">contactDetail</string>
+    <string name="sql_column_contact_detail_type">TEXT</string>
+    <string name="sql_column_alert_type">alertType</string>
+    <string name="sql_column_alert_type_type">TEXT</string>
+    <string name="sql_column_alert_detail">alertDetail</string>
+    <string name="sql_column_alert_detail_type">INT</string>
 </resources>

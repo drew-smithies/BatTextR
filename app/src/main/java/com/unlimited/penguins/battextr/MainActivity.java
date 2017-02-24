@@ -2,6 +2,8 @@ package com.unlimited.penguins.battextr;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<AlertItem> myDataset = new ArrayList<AlertItem>();
+    private SQLiteDatabase alertDatabase;
 
 
     @Override
@@ -39,7 +42,10 @@ public class MainActivity extends AppCompatActivity {
 //        myDataset.add(new AlertItem("Mike Ross", "text", "903 352 6453"));
 //        myDataset.add(new AlertItem("Mary Jewel", "text", "909 736 2342"));
 
-        loadSavedAlerts();
+        alertDatabase = new AlertOpenHelper(this).getWritableDatabase();
+
+        // Load saved alerts
+        loadSavedAlertsSQL();
 
         // Setup recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -83,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Add item to recycler view
                 try {
-                    mAdapter.addItem(new AlertItem("Drew Test", "email", "dtest@me.com"));
+                    mAdapter.addItem(new AlertItem("Drew Test", "email", "dtest@me.com"), alertDatabase);
                 } catch (IOException e) {
                     Log.d("Drew", "onClick: broke");
                 }
@@ -115,6 +121,30 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Load saved data
+    public void loadSavedAlertsSQL(){
+
+        Cursor alertCursor = alertDatabase.rawQuery("SELECT * FROM " + getString(R.string.sql_table_name), null);
+
+        String[] alertResults = new String[alertCursor.getCount()];
+        int contactNameIndex = alertCursor.getColumnIndex(getString(R.string.sql_column_contact_name));
+        int contactDetailIndex = alertCursor.getColumnIndex(getString(R.string.sql_column_contact_detail));
+        int alerTypeIndex = alertCursor.getColumnIndex(getString(R.string.sql_column_alert_type));
+        int alerDetailIndex = alertCursor.getColumnIndex(getString(R.string.sql_column_alert_detail));
+
+        alertCursor.moveToFirst();
+        while (!alertCursor.isAfterLast()) {
+            String thisName = alertCursor.getString(contactNameIndex);
+            String thisContactDetail = alertCursor.getString(contactDetailIndex);
+            String thisAlerType = alertCursor.getString(alerTypeIndex);
+            String thisAlertDetail = alertCursor.getString(alerDetailIndex);
+
+            myDataset.add(new AlertItem(thisName, thisAlerType, thisContactDetail));
+            alertCursor.moveToNext();
+        }
+
+        alertCursor.close();
+    }
+
     public void loadSavedAlerts() {
         try {
             InputStream stream = this.openFileInput(this.getString(R.string.save_alerts_file));

@@ -1,6 +1,8 @@
 package com.unlimited.penguins.battextr;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -78,15 +80,14 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     }
 
     // Add item to data set
-    public void addItem(AlertItem item) throws IOException {
-        // Save to internal storage
-        try {
-            FileOutputStream fos = mContext.openFileOutput(mContext.getString(R.string.save_alerts_file), Context.MODE_APPEND);
-            String writeString = item.getString() + System.getProperty("line.separator");
-            fos.write(writeString.getBytes());
-        } catch (IOException e) {
-            Log.d("Drew", "addItem: broke");
-        }
+    public void addItem(AlertItem item, SQLiteDatabase db) throws IOException {
+        // Save to SQL
+        ContentValues insertValues = new ContentValues(1);
+        insertValues.put(mContext.getString(R.string.sql_column_contact_name), item.getName());
+        insertValues.put(mContext.getString(R.string.sql_column_contact_detail), item.getType());
+        insertValues.put(mContext.getString(R.string.sql_column_alert_type), item.getDetail());
+        db.insert(mContext.getString(R.string.sql_table_name), "null", insertValues);
+
         mDataset.add(item);
         notifyItemInserted(mDataset.size()-1);
     }
