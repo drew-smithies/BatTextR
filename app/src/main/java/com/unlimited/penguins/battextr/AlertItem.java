@@ -1,19 +1,21 @@
 package com.unlimited.penguins.battextr;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+
 /**
  * Created by Drew on 2/22/2017.
  */
 
-class AlertItem extends Object {
+class AlertItem {
     Integer mID;
-    String mObjectString;
     String mName;
     String mType;
     String mDetail;
-
-    public String getString(){
-        return mName + '&' + mType + '&' + mDetail;
-    }
 
     public AlertItem(int id, String name, String type, String detail){
         mID = id;
@@ -22,12 +24,6 @@ class AlertItem extends Object {
         mDetail = detail;
     }
 
-    public AlertItem(String concatString) {
-        String[] attr = concatString.split("&");
-        mName = attr[0];
-        mType = attr[1];
-        mDetail = attr[2];
-    }
     public int getID(){ return mID; }
 
     public void setID(int id) { mID = id; }

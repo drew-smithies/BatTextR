@@ -1,5 +1,6 @@
 package com.unlimited.penguins.battextr;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private AlertRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<AlertItem> myDataset = new ArrayList<AlertItem>();
-    private SQLiteDatabase mAlertDatabase;
+    private ArrayList<AlertItem> myDataset = new ArrayList<>();
+    private AlertItemCollection mAlertCollection;
 
 
     @Override
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Load saved alerts
-        loadSavedAlertsSQL();
+        loadSavedAlertsSQL(this);
 
         // Setup recycler view
         setupRecyclerView();
@@ -63,29 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Load saved data
-    public void loadSavedAlertsSQL(){
-        mAlertDatabase = new AlertOpenHelper(this).getWritableDatabase();
-        Cursor alertCursor = mAlertDatabase.rawQuery("SELECT * FROM " + getString(R.string.sql_table_name), null);
+    public void loadSavedAlertsSQL(Context context){
 
-        int idIndex = alertCursor.getColumnIndex(getString(R.string.sql_column_alert_id));
-        int contactNameIndex = alertCursor.getColumnIndex(getString(R.string.sql_column_contact_name));
-        int contactDetailIndex = alertCursor.getColumnIndex(getString(R.string.sql_column_contact_detail));
-        int alertTypeIndex = alertCursor.getColumnIndex(getString(R.string.sql_column_alert_type));
-        int alertDetailIndex = alertCursor.getColumnIndex(getString(R.string.sql_column_alert_detail));
-
-        alertCursor.moveToFirst();
-        while (!alertCursor.isAfterLast()) {
-            int alertID = alertCursor.getInt(idIndex);
-            String thisName = alertCursor.getString(contactNameIndex);
-            String thisContactDetail = alertCursor.getString(contactDetailIndex);
-            String thisAlerType = alertCursor.getString(alertTypeIndex);
-            String thisAlertDetail = alertCursor.getString(alertDetailIndex);
-
-            myDataset.add(new AlertItem(alertID, thisName, thisAlerType, thisContactDetail));
-            alertCursor.moveToNext();
-        }
-
-        alertCursor.close();
+        // Get alert items
+        mAlertCollection = new AlertItemCollection(context);
+        myDataset = mAlertCollection.getAllAlerts();
     }
 
     public void setupRecyclerView() {
@@ -110,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 //Remove swiped item from list and notify the RecyclerView
                 int swipePosition = viewHolder.getAdapterPosition();
-                mAdapter.removeItem(swipePosition, mAlertDatabase);
+                mAdapter.removeItem(swipePosition, mAlertCollection);
             }
 
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -132,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Add item to recycler view
-                mAdapter.addItem(new AlertItem(new Random().nextInt(1000), "Drew Test", "email", "dtest@me.com"), mAlertDatabase);
+                mAdapter.addItem(new AlertItem(new Random().nextInt(1000), "Drew Test", "email", "dtest@me.com"), mAlertCollection);
             }
         });
     }

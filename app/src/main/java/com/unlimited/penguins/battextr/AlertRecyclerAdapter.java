@@ -67,25 +67,16 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     }
 
     // Add item to data set
-    public void addItem(AlertItem item, SQLiteDatabase db) {
-        // Save to SQL
-        ContentValues insertValues = new ContentValues(1);
-        insertValues.put(mContext.getString(R.string.sql_column_contact_name), item.getName());
-        insertValues.put(mContext.getString(R.string.sql_column_contact_detail), item.getType());
-        insertValues.put(mContext.getString(R.string.sql_column_alert_type), item.getDetail());
-        long newID = db.insert(mContext.getString(R.string.sql_table_name), "null", insertValues);
-        item.setID((int) newID);
+    public void addItem(AlertItem item, AlertItemCollection collection) {
 
         mDataset.add(item);
+        collection.saveItem(item);
         notifyItemInserted(mDataset.size()-1);
     }
     
     // Remove item from dataset
-    public void removeItem(int position, SQLiteDatabase db) {
-        String[] whereArgs = new String[1];
-        whereArgs[0] = "" + mDataset.get(position).getID() + "";
-        db.delete(mContext.getString(R.string.sql_table_name), "_id=?", whereArgs);
-
+    public void removeItem(int position, AlertItemCollection collection) {
+        collection.deleteItem(mDataset.get(position));
         mDataset.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mDataset.size());
