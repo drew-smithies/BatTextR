@@ -6,18 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * Created by Drew on 2/25/2017.
  */
 
-public class AlertItemCollection {
+public class AlertItemDataHelper {
     SQLiteDatabase mDatabase;
     Context mContext;
 
-    public AlertItemCollection(Context context) {
+    public AlertItemDataHelper(Context context) {
         mDatabase = new AlertOpenHelper(context).getWritableDatabase();
         mContext = context;
     }

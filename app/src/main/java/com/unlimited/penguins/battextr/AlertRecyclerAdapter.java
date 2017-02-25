@@ -1,8 +1,6 @@
 package com.unlimited.penguins.battextr;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -67,16 +65,16 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     }
 
     // Add item to data set
-    public void addItem(AlertItem item, AlertItemCollection collection) {
+    public void addItem(AlertItem item, AlertItemDataHelper dataHelper) {
 
+        dataHelper.saveItem(item);
         mDataset.add(item);
-        collection.saveItem(item);
         notifyItemInserted(mDataset.size()-1);
     }
     
     // Remove item from dataset
-    public void removeItem(int position, AlertItemCollection collection) {
-        collection.deleteItem(mDataset.get(position));
+    public void removeItem(int position, AlertItemDataHelper dataHelper) {
+        dataHelper.deleteItem(mDataset.get(position));
         mDataset.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mDataset.size());

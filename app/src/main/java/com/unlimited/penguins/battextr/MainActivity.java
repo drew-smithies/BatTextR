@@ -1,8 +1,6 @@
 package com.unlimited.penguins.battextr;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<AlertItem> myDataset = new ArrayList<>();
-    private AlertItemCollection mAlertCollection;
+    private AlertItemDataHelper mAlertItemDataHelper;
 
 
     @Override
@@ -67,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
     public void loadSavedAlertsSQL(Context context){
 
         // Get alert items
-        mAlertCollection = new AlertItemCollection(context);
-        myDataset = mAlertCollection.getAllAlerts();
+        mAlertItemDataHelper = new AlertItemDataHelper(context);
+        myDataset = mAlertItemDataHelper.getAllAlerts();
     }
 
     public void setupRecyclerView() {
@@ -93,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 //Remove swiped item from list and notify the RecyclerView
                 int swipePosition = viewHolder.getAdapterPosition();
-                mAdapter.removeItem(swipePosition, mAlertCollection);
+                mAdapter.removeItem(swipePosition, mAlertItemDataHelper);
             }
 
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Add item to recycler view
-                mAdapter.addItem(new AlertItem(new Random().nextInt(1000), "Drew Test", "email", "dtest@me.com"), mAlertCollection);
+                mAdapter.addItem(new AlertItem(new Random().nextInt(1000), "Drew Test", "email", "dtest@me.com"), mAlertItemDataHelper);
             }
         });
     }

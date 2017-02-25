@@ -1,12 +1,5 @@
 package com.unlimited.penguins.battextr;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import java.util.ArrayList;
-
 /**
  * Created by Drew on 2/22/2017.
  */
