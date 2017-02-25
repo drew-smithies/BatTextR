@@ -81,7 +81,11 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     }
     
     // Remove item from dataset
-    public void removeItem(int position) {
+    public void removeItem(int position, SQLiteDatabase db) {
+        String[] whereArgs = new String[1];
+        whereArgs[0] = "" + mDataset.get(position).getID() + "";
+        db.delete(mContext.getString(R.string.sql_table_name), "_id=?", whereArgs);
+
         mDataset.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mDataset.size());
