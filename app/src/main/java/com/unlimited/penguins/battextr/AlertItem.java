@@ -5,6 +5,7 @@ package com.unlimited.penguins.battextr;
  */
 
 class AlertItem extends Object {
+    Integer mID;
     String mObjectString;
     String mName;
     String mType;
@@ -14,7 +15,8 @@ class AlertItem extends Object {
         return mName + '&' + mType + '&' + mDetail;
     }
 
-    public AlertItem(String name, String type, String detail){
+    public AlertItem(int id, String name, String type, String detail){
+        mID = id;
         mName = name;
         mType = type;
         mDetail = detail;
@@ -26,10 +28,11 @@ class AlertItem extends Object {
         mType = attr[1];
         mDetail = attr[2];
     }
+    public int getID(){ return mID; }
 
-    public void setName(String name) {
-        mName = name;
-    }
+    public void setID(int id) { mID = id; }
+
+    public void setName(String name) { mName = name; }
 
     public String getName() {
         return mName;
