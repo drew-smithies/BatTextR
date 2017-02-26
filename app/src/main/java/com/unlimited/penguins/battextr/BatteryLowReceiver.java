@@ -1,5 +1,6 @@
 package com.unlimited.penguins.battextr;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.telephony.SmsManager;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -31,9 +33,7 @@ public class BatteryLowReceiver extends BroadcastReceiver {
                 String log = "";
 
                 // Check for permissions
-                android.Manifest.permission perm = new android.Manifest.permission();
-                int permissionCheck = ContextCompat.checkSelfPermission(context, perm.SEND_SMS);
-                if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
 
                     // Get alert data helper
                     AlertItemDataHelper dh = new AlertItemDataHelper(context);
@@ -57,7 +57,10 @@ public class BatteryLowReceiver extends BroadcastReceiver {
                     // Must call finish() so the BroadcastReceiver can be recycled.
                     pendingResult.finish();
                 } else {
+                    Log.d(TAG, "Permission check failure");
                     // TODO: do something noting sms failed because of permissions
+                    // Toast.makeText(context, "Could not send SMS, permission is not granted.", Toast.LENGTH_LONG).show();
+                    pendingResult.finish();
                 }
                 return log;
             }

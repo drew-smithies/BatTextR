@@ -43,8 +43,7 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     @Override
     public AlertRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        CardView v = (CardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.alert_card, parent, false);
+        CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.alert_card, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -66,7 +65,6 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
 
     // Add item to data set
     public void addItem(AlertItem item, AlertItemDataHelper dataHelper) {
-
         dataHelper.saveItem(item);
         mDataset.add(item);
         notifyItemInserted(mDataset.size()-1);

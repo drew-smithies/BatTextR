@@ -2,17 +2,20 @@ package com.unlimited.penguins.battextr;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,18 +29,20 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<AlertItem> myDataset = new ArrayList<>();
     private AlertItemDataHelper mAlertItemDataHelper;
-    final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 808;
+    final int MY_PERMISSIONS_REQUEST_SEND_SMS = 808;
+    private static final String TAG = "Drew_MainActivity";
 
 
+    /*************************************************************************************************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        checkSMSPermissions(this, this);
+        checkSMSPermissions();
 
         // Load saved alerts
-        loadSavedAlertsSQL(this);
+        loadSavedAlertsSQL();
 
         // Setup recycler view
         setupRecyclerView();
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setupToolbars();
     }
 
+    /*************************************************************************************************************************/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -53,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /*************************************************************************************************************************/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -69,14 +76,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /*************************************************************************************************************************/
     // Load saved data
-    public void loadSavedAlertsSQL(Context context){
+    public void loadSavedAlertsSQL(){
 
         // Get alert items
-        mAlertItemDataHelper = new AlertItemDataHelper(context);
+        mAlertItemDataHelper = new AlertItemDataHelper(this);
         myDataset = mAlertItemDataHelper.getAllAlerts();
     }
 
+    /*************************************************************************************************************************/
     public void setupRecyclerView() {
         // Setup recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -103,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
+    /*************************************************************************************************************************/
     public void setupToolbars() {
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -119,31 +129,85 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    void checkSMSPermissions(Context context, Activity thisActivity) {
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+    /*************************************************************************************************************************/
+    public void checkSMSPermissions() {
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            // if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity, Manifest.permission.SEND_SMS)) {
+            // Check if an explanation should be shown
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
+                
+                // Show explanation
+                showPermissionExlanation(this);
 
-            // Show an explanation to the user *asynchronously* -- don't block
-            // this thread waiting for the user's response! After the user
-            // sees the explanation, try again to request the permission.
-            // TODO: show message explaining sms permissions
+            } else {
 
-            //  } else {
-
-            // No explanation needed, we can request the permission.
-
-            ActivityCompat.requestPermissions(thisActivity,
-                    new String[]{Manifest.permission.SEND_SMS},
-                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-
-            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-            // app-defined int constant. The callback method gets the
-            // result of the request.
-            // }
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_SEND_SMS);
+            }
         }
+    }
+
+    /*************************************************************************************************************************/
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    // Permission denied, show warning message
+                    showMissingPermissionWarning(this);
+                }
+                return;
+            }
+        }
+    }
+
+    /*************************************************************************************************************************/
+    void showPermissionExlanation(final Activity thisActivity){
+        // Show an explanation of permission to the user in an alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.perm_dialog_title));
+        builder.setMessage(getString(R.string.perm_dialog_message));
+        builder.setCancelable(true);
+
+        // Set cancel button
+        builder.setNegativeButton(getString(R.string.perm_dialog_negative), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Show message in snackbar that SMS permissions are disabled
+                showMissingPermissionWarning(thisActivity);
+            }
+        });
+
+        // Set cancel listener
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
+                // Show message in snackbar that SMS permissions are disabled
+                showMissingPermissionWarning(thisActivity);
+            }
+        });
+
+        // Set okay button and listener
+        builder.setPositiveButton(getString(R.string.perm_dialog_positive), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ActivityCompat.requestPermissions(thisActivity, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_SEND_SMS);
+            }
+        });
+        builder.show();
+    }
+
+    /*************************************************************************************************************************/
+    void showMissingPermissionWarning(final Activity thisActivity) {
+        Snackbar.make(findViewById(R.id.activity_main), getString(R.string.perm_snackbar_text), Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.perm_snackbar_action), new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        ActivityCompat.requestPermissions(thisActivity, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_SEND_SMS);
+                    }
+                })
+                .show();
     }
 }

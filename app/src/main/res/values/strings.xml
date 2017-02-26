@@ -14,4 +14,12 @@
     <string name="sql_column_alert_type_type">TEXT</string>
     <string name="sql_column_alert_detail">alertDetail</string>
     <string name="sql_column_alert_detail_type">INT</string>
+
+    <!-- Permission dialog -->
+    <string name="perm_dialog_title">SMS Permission Needed</string>
+    <string name="perm_dialog_message">In order for BatTextR to function properly, it needs permission to send SMS messages. BatTextR will only send SMS to the contacts you specify.</string>
+    <string name="perm_dialog_positive">Okay</string>
+    <string name="perm_dialog_negative">Cancel</string>
+    <string name="perm_snackbar_text">SMS Permissions are disabled, BatTextR will not work.</string>
+    <string name="perm_snackbar_action">Enable</string>
 </resources>
