@@ -2,9 +2,14 @@ package com.unlimited.penguins.battextr;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -15,7 +20,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<AlertItem> myDataset = new ArrayList<>();
     private AlertItemDataHelper mAlertItemDataHelper;
-    final int MY_PERMISSIONS_REQUEST_SEND_SMS = 808;
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 808;
+    private static final int RESULT_PICK_CONTACT = 809;
     private static final String TAG = "Drew_MainActivity";
 
 
@@ -77,6 +82,37 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*************************************************************************************************************************/
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    // Permission denied, show warning message
+                    showMissingPermissionWarning(this);
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+            // Check for the request code
+            switch (requestCode) {
+                case RESULT_PICK_CONTACT:
+                    contactPicked(data);
+                    break;
+            }
+        } else {
+            // Contact was not picked
+            // TODO: Handle contact not picked
+        }
+    }
+
+
+    /*************************************************************************************************************************/
     // Load saved data
     public void loadSavedAlertsSQL(){
 
@@ -92,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new AlertRecyclerAdapter(MainActivity.this, myDataset);
+        mAdapter = new AlertRecyclerAdapter(myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
         // Setup swipe touch helper
@@ -120,18 +156,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Floating action bar
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final Context context = this;
+        final Activity thisActivity = this;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Add item to recycler view
-                mAdapter.addItem(new AlertItem(new Random().nextInt(1000), "Drew Test", "email", "dtest@me.com"), mAlertItemDataHelper);
+                //mAdapter.addItem(new AlertItem(context), mAlertItemDataHelper);
+
+                Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                thisActivity.startActivityForResult(contactPickerIntent, RESULT_PICK_CONTACT);
             }
         });
     }
 
     /*************************************************************************************************************************/
     public void checkSMSPermissions() {
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
 
             // Check if an explanation should be shown
@@ -144,20 +184,6 @@ public class MainActivity extends AppCompatActivity {
 
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
-        }
-    }
-
-    /*************************************************************************************************************************/
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
-                if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    // Permission denied, show warning message
-                    showMissingPermissionWarning(this);
-                }
-                return;
             }
         }
     }
@@ -210,4 +236,23 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
+    /*************************************************************************************************************************/
+    void contactPicked(Intent intent) {
+        String contactName;
+        String contactNumber;
+
+        Uri uri = intent.getData();
+
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+        int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+
+        contactName = cursor.getString(nameIndex);
+        contactNumber = cursor.getString(phoneIndex);
+
+        mAdapter.addItem(new AlertItem(0, contactName, "text", contactNumber), mAlertItemDataHelper);
+    }
+
 }

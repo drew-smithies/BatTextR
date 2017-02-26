@@ -2,6 +2,12 @@
     <string name="app_name">BatTextR</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Card view -->
+    <string name="card_default_text">Click here to add a contact</string>
+
+    <!-- SMS Message -->
+    <string name="sms_body">My phone will die soon!</string>
+    
     <!-- SQL Database strings -->
     <string name="sql_database_name">BatTextR_DB</string>
     <string name="sql_table_name">alerts</string>

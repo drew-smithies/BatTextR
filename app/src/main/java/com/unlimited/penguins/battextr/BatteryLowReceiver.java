@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.telephony.SmsManager;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,7 +29,6 @@ public class BatteryLowReceiver extends BroadcastReceiver {
         AsyncTask<String, Integer, String> asyncTask = new AsyncTask<String, Integer, String>() {
             @Override
             protected String doInBackground(String... params) {
-                String log = "";
 
                 // Check for permissions
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
@@ -40,29 +38,19 @@ public class BatteryLowReceiver extends BroadcastReceiver {
                     ArrayList<AlertItem> list = dh.getAllAlerts();
                     SmsManager smsManager = SmsManager.getDefault();
 
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("Alert Count: " + list.size() + "\n");
                     for (AlertItem item : list) {
-                        sb.append(item.getID() + ". " + item.getName() + "\n");
-                        smsManager.sendTextMessage("5556", null, "This is a test. Id: " + item.getID(), null, null);
+                        if (!item.getDetail().equals("")) {
+                            smsManager.sendTextMessage(item.getDetail(), null, "ID: " + item.getID() + context.getString(R.string.sms_body), null, null);
+                        }
                     }
-
-                    // Debug
-                    sb.append("Action: " + intent.getAction() + "\n");
-                    sb.append("URI: " + intent.toUri(Intent.URI_INTENT_SCHEME).toString() + "\n");
-                    log = sb.toString();
-                    Log.d(TAG, log);
 
                     // Must call finish() so the BroadcastReceiver can be recycled.
                     pendingResult.finish();
                 } else {
-                    Log.d(TAG, "Permission check failure");
                     // TODO: do something noting sms failed because of permissions
-                    // Toast.makeText(context, "Could not send SMS, permission is not granted.", Toast.LENGTH_LONG).show();
                     pendingResult.finish();
                 }
-                return log;
+                return "";
             }
         };
         asyncTask.execute();

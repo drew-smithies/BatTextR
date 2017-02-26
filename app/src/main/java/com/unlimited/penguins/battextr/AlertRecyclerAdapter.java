@@ -1,6 +1,5 @@
 package com.unlimited.penguins.battextr;
 
-import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,11 +15,8 @@ import java.util.ArrayList;
 
 class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.ViewHolder> {
     private ArrayList<AlertItem> mDataset;
-    private Context mContext;
 
     // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         CardView mCardView;
@@ -34,8 +30,7 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    AlertRecyclerAdapter(Context context, ArrayList<AlertItem> myDataset) {
-        mContext = context;
+    AlertRecyclerAdapter(ArrayList<AlertItem> myDataset) {
         mDataset = myDataset;
     }
 
@@ -52,8 +47,7 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
+        // Set viewholder text
         holder.mTextView.setText(mDataset.get(position).getID() + ". " + mDataset.get(position).getName());
     }
 
