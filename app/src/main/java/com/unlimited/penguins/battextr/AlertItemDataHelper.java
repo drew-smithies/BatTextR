@@ -17,8 +17,8 @@ public class AlertItemDataHelper {
     Context mContext;
 
     public AlertItemDataHelper(Context context) {
-        mDatabase = new AlertOpenHelper(context).getWritableDatabase();
         mContext = context;
+        mDatabase = new AlertOpenHelper(mContext).getWritableDatabase();
     }
 
     public void saveItem(AlertItem item) {
@@ -36,19 +36,21 @@ public class AlertItemDataHelper {
         String[] whereArgs = new String[1];
         whereArgs[0] = "" + item.getID() + "";
         mDatabase.delete(mContext.getString(R.string.sql_table_name), "_id=?", whereArgs);
-
     }
 
     public ArrayList<AlertItem> getAllAlerts() {
-        // mDatabase = new AlertOpenHelper(context).getWritableDatabase();
+
+        // Query for alerts
         Cursor alertCursor = mDatabase.rawQuery("SELECT * FROM " + mContext.getString(R.string.sql_table_name), null);
 
+        // Get column indexes
         int idIndex = alertCursor.getColumnIndex(mContext.getString(R.string.sql_column_alert_id));
         int contactNameIndex = alertCursor.getColumnIndex(mContext.getString(R.string.sql_column_contact_name));
         int contactDetailIndex = alertCursor.getColumnIndex(mContext.getString(R.string.sql_column_contact_detail));
         int alertTypeIndex = alertCursor.getColumnIndex(mContext.getString(R.string.sql_column_alert_type));
         int alertDetailIndex = alertCursor.getColumnIndex(mContext.getString(R.string.sql_column_alert_detail));
 
+        // Loop over query results and create new alertitems
         ArrayList<AlertItem> thisList = new ArrayList<>();
         alertCursor.moveToFirst();
         while (!alertCursor.isAfterLast()) {

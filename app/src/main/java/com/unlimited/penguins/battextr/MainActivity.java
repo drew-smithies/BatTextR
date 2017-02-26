@@ -1,8 +1,13 @@
 package com.unlimited.penguins.battextr;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,12 +26,15 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<AlertItem> myDataset = new ArrayList<>();
     private AlertItemDataHelper mAlertItemDataHelper;
+    final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 808;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkSMSPermissions(this, this);
 
         // Load saved alerts
         loadSavedAlertsSQL(this);
@@ -72,16 +80,9 @@ public class MainActivity extends AppCompatActivity {
     public void setupRecyclerView() {
         // Setup recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
         mAdapter = new AlertRecyclerAdapter(MainActivity.this, myDataset);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -116,5 +117,33 @@ public class MainActivity extends AppCompatActivity {
                 mAdapter.addItem(new AlertItem(new Random().nextInt(1000), "Drew Test", "email", "dtest@me.com"), mAlertItemDataHelper);
             }
         });
+    }
+
+    void checkSMSPermissions(Context context, Activity thisActivity) {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+
+
+            // Should we show an explanation?
+            // if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity, Manifest.permission.SEND_SMS)) {
+
+            // Show an explanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
+            // TODO: show message explaining sms permissions
+
+            //  } else {
+
+            // No explanation needed, we can request the permission.
+
+            ActivityCompat.requestPermissions(thisActivity,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+            // }
+        }
     }
 }

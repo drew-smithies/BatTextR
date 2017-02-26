@@ -3,6 +3,7 @@
     package="com.unlimited.penguins.battextr">
 
     <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
