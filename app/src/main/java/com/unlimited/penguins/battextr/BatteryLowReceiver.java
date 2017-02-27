@@ -43,15 +43,15 @@ public class BatteryLowReceiver extends BroadcastReceiver {
                     ArrayList<AlertItem> list = dh.getAllAlerts();
                     SmsManager smsManager = SmsManager.getDefault();
 
+                    // Send SMS for each item
                     for (AlertItem item : list) {
                         if (!item.getDetail().equals("")) {
-                            smsManager.sendTextMessage(item.getDetail(), null, "ID: " + item.getID() + context.getString(R.string.sms_body), null, null);
+                            smsManager.sendTextMessage(item.getDetail(), null, "ID: " + item.getID() + " " + context.getString(R.string.sms_body), null, null);
                         }
                     }
 
                     // Show notification
                     showNotification(context, list.size());
-
 
                     // Must call finish() so the BroadcastReceiver can be recycled.
                     pendingResult.finish();
@@ -66,9 +66,11 @@ public class BatteryLowReceiver extends BroadcastReceiver {
     }
 
     void showNotification(Context context, int numberSent) {
+        // Get pending intent
         Intent resultIntent = new Intent(context, MainActivity.class);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        // Set notification properties
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(context.getString(R.string.notif_title))
@@ -76,6 +78,8 @@ public class BatteryLowReceiver extends BroadcastReceiver {
             .setAutoCancel(true)
             .setContentIntent(resultPendingIntent);
 
+        // Display notification
+        // TODO: Figure out why notif. goes away when the app is killed
         NotificationManager notifyMgr = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         notifyMgr.notify(NOTIF_ID, builder.build());
     }
