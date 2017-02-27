@@ -1,4 +1,5 @@
 <resources>
+    <!-- App -->
     <string name="app_name">BatTextR</string>
     <string name="action_settings">Settings</string>
 
@@ -7,7 +8,20 @@
 
     <!-- SMS Message -->
     <string name="sms_body">My phone will die soon!</string>
-    
+
+    <!-- Notification -->
+    <string name="notif_title">Low Battery Detected</string>
+    <string name="notif_text1">"A text message has sent to "</string>
+    <string name="notif_text2">" of your contacts."</string>
+
+    <!-- Permission dialog -->
+    <string name="perm_dialog_title">SMS Permission Needed</string>
+    <string name="perm_dialog_message">In order for BatTextR to function properly, it needs permission to send SMS messages. BatTextR will only send SMS to the contacts you specify.</string>
+    <string name="perm_dialog_positive">Okay</string>
+    <string name="perm_dialog_negative">Cancel</string>
+    <string name="perm_snackbar_text">SMS Permissions are disabled, BatTextR will not work.</string>
+    <string name="perm_snackbar_action">Enable</string>
+
     <!-- SQL Database strings -->
     <string name="sql_database_name">BatTextR_DB</string>
     <string name="sql_table_name">alerts</string>
@@ -21,11 +35,4 @@
     <string name="sql_column_alert_detail">alertDetail</string>
     <string name="sql_column_alert_detail_type">INT</string>
 
-    <!-- Permission dialog -->
-    <string name="perm_dialog_title">SMS Permission Needed</string>
-    <string name="perm_dialog_message">In order for BatTextR to function properly, it needs permission to send SMS messages. BatTextR will only send SMS to the contacts you specify.</string>
-    <string name="perm_dialog_positive">Okay</string>
-    <string name="perm_dialog_negative">Cancel</string>
-    <string name="perm_snackbar_text">SMS Permissions are disabled, BatTextR will not work.</string>
-    <string name="perm_snackbar_action">Enable</string>
 </resources>
