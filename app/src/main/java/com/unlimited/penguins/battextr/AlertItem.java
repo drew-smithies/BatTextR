@@ -12,13 +12,6 @@ class AlertItem {
     String mType;
     String mDetail;
 
-    public AlertItem(Context context) {
-        mID = 0;
-        mName = context.getString(R.string.card_default_text);
-        mType = "text";
-        mDetail = "";
-    }
-
     public AlertItem(int id, String name, String type, String detail){
         mID = id;
         mName = name;
