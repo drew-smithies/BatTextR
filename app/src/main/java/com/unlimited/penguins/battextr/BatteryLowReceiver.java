@@ -72,7 +72,7 @@ public class BatteryLowReceiver extends BroadcastReceiver {
 
         // Set notification properties
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.mipmap.ic_notif)
             .setContentTitle(context.getString(R.string.notif_title))
             .setContentText(context.getString(R.string.notif_text1) + numberSent + context.getString(R.string.notif_text2))
             .setAutoCancel(true)
