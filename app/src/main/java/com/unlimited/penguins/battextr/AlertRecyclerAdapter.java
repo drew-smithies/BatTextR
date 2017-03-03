@@ -1,9 +1,9 @@
 package com.unlimited.penguins.battextr;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,13 +19,15 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     // Provide a reference to the views for each data item
     static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        CardView mCardView;
+        RelativeLayout mRelativeLayout;
         TextView mTextView;
+        TextView mSubTextView;
 
-        ViewHolder(CardView v) {
+        ViewHolder(RelativeLayout v) {
             super(v);
-            mCardView = v;
-            mTextView = (TextView) v.findViewById(R.id.card_text);
+            mRelativeLayout = v;
+            mTextView = (TextView) v.findViewById(R.id.list_item);
+            mSubTextView = (TextView) v.findViewById(R.id.list_item_subtext);
         }
     }
 
@@ -38,7 +40,7 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     @Override
     public AlertRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.alert_card, parent, false);
+        RelativeLayout v = (RelativeLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.alert_list_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -48,7 +50,8 @@ class AlertRecyclerAdapter extends RecyclerView.Adapter<AlertRecyclerAdapter.Vie
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // Set viewholder text
-        holder.mTextView.setText(mDataset.get(position).getID() + ". " + mDataset.get(position).getName());
+        holder.mTextView.setText(mDataset.get(position).getName());
+        holder.mSubTextView.setText(mDataset.get(position).getDetail());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

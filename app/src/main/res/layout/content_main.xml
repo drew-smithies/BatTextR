@@ -9,24 +9,16 @@
         android:text="Alerts"
         android:layout_width="match_parent"
         android:layout_height="38dp"
-        android:gravity="center_horizontal"
         android:textSize="34sp"
         android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="0dp"
-        />
-
-    <TextView
-        android:text="____________"
-        android:gravity="top"
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:layout_marginTop="0dp"
-        android:textAlignment="center" />
+        android:paddingLeft="@dimen/list_title_leftPadding" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:scrollbars="vertical"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/rec_topPadding"
+        />
 
 </LinearLayout>

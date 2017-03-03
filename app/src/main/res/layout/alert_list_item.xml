@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- A CardView that contains a TextView -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_height"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/list_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/card_textColor"
+        android:textSize="@dimen/list_text_size"
+        android:paddingLeft="@dimen/list_maintext_leftPadding"
+        android:paddingRight="@dimen/list_maintext_rightPadding"
+        android:paddingTop="@dimen/list_text_topBotPadding"
+        android:paddingBottom="0dp"
+        tools:text="Kirstie Carter"
+        />
+
+    <TextView
+        android:id="@+id/list_item_subtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/card_text_subColor"
+        android:textSize="@dimen/list_text_sub_size"
+        android:paddingLeft="@dimen/list_maintext_leftPadding"
+        android:paddingRight="@dimen/list_maintext_rightPadding"
+        android:layout_below="@id/list_item"
+        tools:text="(903) 819 8839"
+        />
+</RelativeLayout>
