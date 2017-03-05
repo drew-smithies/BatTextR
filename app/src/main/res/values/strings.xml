@@ -2,9 +2,11 @@
     <!-- App -->
     <string name="app_name">BatTextR</string>
     <string name="action_settings">Settings</string>
-
-    <!-- Card view -->
-    <string name="card_default_text">Click here to add a contact</string>
+    <string name="action_info">Help</string>
+    
+    <!-- Info dialog -->
+    <string name="info_title">Welcome to BatTextR</string>
+    <string name="info_message">BatTextR listens for your device\'s low battery warning and will send an SMS message to all contacts you have setup. This will happen at %15 battery. \n\n You can add new contacts using the button in the bottom right. \n\n You can turn alerts on or off using the switches next to each contact\'s name.</string>
 
     <!-- SMS Message -->
     <string name="sms_body">My phone will die soon!</string>

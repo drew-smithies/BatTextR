@@ -74,9 +74,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
+        if (id == R.id.action_info) {
+            showHelpDialog();
             return true;
-        }*/
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -254,5 +255,13 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter.addItem(new AlertItem(0, contactName, "text", contactNumber, 1));
     }
+
+    private void showHelpDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.info_title));
+        builder.setMessage(getString(R.string.info_message));
+        builder.show();
+    }
+
 
 }
