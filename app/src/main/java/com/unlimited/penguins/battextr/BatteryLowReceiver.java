@@ -41,16 +41,21 @@ public class BatteryLowReceiver extends BroadcastReceiver {
                     AlertItemDataHelper dh = new AlertItemDataHelper(context);
                     ArrayList<AlertItem> list = dh.getAllAlerts();
                     SmsManager smsManager = SmsManager.getDefault();
+                    boolean wasSent = false;
+                    int sentCount = 0;
 
                     // Send SMS for each item
                     for (AlertItem item : list) {
-                        if (!item.getDetail().equals("")) {
+                        if (!item.getDetail().equals("") && item.isAlertOn()) {
                             smsManager.sendTextMessage(item.getDetail(), null, "ID: " + item.getID() + " " + context.getString(R.string.sms_body), null, null);
+                            wasSent = true;
+                            sentCount++;
                         }
                     }
 
                     // Show notification
-                    showNotification(context, list.size());
+                    if(wasSent)
+                        showNotification(context, sentCount);
 
                     // Must call finish() so the BroadcastReceiver can be recycled.
                     pendingResult.finish();

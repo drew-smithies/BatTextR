@@ -27,7 +27,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*************************************************************************************************************************/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new AlertRecyclerAdapter(myDataset);
+        mAdapter = new AlertRecyclerAdapter(myDataset, this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL), -1);
 
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 //Remove swiped item from list and notify the RecyclerView
                 int swipePosition = viewHolder.getAdapterPosition();
-                mAdapter.removeItem(swipePosition, mAlertItemDataHelper);
+                mAdapter.removeItem(swipePosition);
             }
 
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -159,13 +159,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Floating action bar
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        final Context context = this;
         final Activity thisActivity = this;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Add item to recycler view
-                //mAdapter.addItem(new AlertItem(context), mAlertItemDataHelper);
 
                 Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                 thisActivity.startActivityForResult(contactPickerIntent, RESULT_PICK_CONTACT);
@@ -255,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         contactName = cursor.getString(nameIndex);
         contactNumber = cursor.getString(phoneIndex);
 
-        mAdapter.addItem(new AlertItem(0, contactName, "text", contactNumber), mAlertItemDataHelper);
+        mAdapter.addItem(new AlertItem(0, contactName, "text", contactNumber, 1));
     }
 
 }

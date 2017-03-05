@@ -34,5 +34,7 @@
     <string name="sql_column_alert_type_type">TEXT</string>
     <string name="sql_column_alert_detail">alertDetail</string>
     <string name="sql_column_alert_detail_type">INT</string>
+    <string name="sql_column_alert_isOn">isOn</string>
+    <string name="sql_column_alert_isOn_type">INT</string>
 
 </resources>

@@ -28,8 +28,15 @@ public class AlertItemDataHelper {
         insertValues.put(mContext.getString(R.string.sql_column_contact_name), item.getName());
         insertValues.put(mContext.getString(R.string.sql_column_contact_detail), item.getDetail());
         insertValues.put(mContext.getString(R.string.sql_column_alert_type), item.getType());
+        insertValues.put(mContext.getString(R.string.sql_column_alert_isOn), item.getIsOn());
         long newID = mDatabase.insert(mContext.getString(R.string.sql_table_name), "null", insertValues);
         item.setID((int) newID);
+    }
+
+    public void updateItem(AlertItem item) {
+        ContentValues updateValues = new ContentValues(1);
+        updateValues.put(mContext.getString(R.string.sql_column_alert_isOn), item.getIsOn());
+        mDatabase.update(mContext.getString(R.string.sql_table_name), updateValues, "_id=" + item.getID(), null);
     }
 
     public void deleteItem(AlertItem item) {
@@ -49,6 +56,7 @@ public class AlertItemDataHelper {
         int contactDetailIndex = alertCursor.getColumnIndex(mContext.getString(R.string.sql_column_contact_detail));
         int alertTypeIndex = alertCursor.getColumnIndex(mContext.getString(R.string.sql_column_alert_type));
         int alertDetailIndex = alertCursor.getColumnIndex(mContext.getString(R.string.sql_column_alert_detail));
+        int alertIsOnIndex = alertCursor.getColumnIndex(mContext.getString(R.string.sql_column_alert_isOn));
 
         // Loop over query results and create new alertitems
         ArrayList<AlertItem> thisList = new ArrayList<>();
@@ -59,8 +67,9 @@ public class AlertItemDataHelper {
             String thisContactDetail = alertCursor.getString(contactDetailIndex);
             String thisAlerType = alertCursor.getString(alertTypeIndex);
             String thisAlertDetail = alertCursor.getString(alertDetailIndex);
+            int thisAlertIsOn = alertCursor.getInt(alertIsOnIndex);
 
-            thisList.add(new AlertItem(alertID, thisName, thisAlerType, thisContactDetail));
+            thisList.add(new AlertItem(alertID, thisName, thisAlerType, thisContactDetail, thisAlertIsOn));
             alertCursor.moveToNext();
         }
 

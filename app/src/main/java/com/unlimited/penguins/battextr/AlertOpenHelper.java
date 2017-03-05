@@ -20,6 +20,10 @@ public class AlertOpenHelper extends SQLiteOpenHelper {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        switch (oldVersion) {
+            case 1:
+
+        }
 
     }
 
@@ -31,6 +35,7 @@ public class AlertOpenHelper extends SQLiteOpenHelper {
                 + ", " + mContext.getString(R.string.sql_column_contact_detail) + " " + mContext.getString(R.string.sql_column_contact_detail_type) + " NOT NULL "
                 + ", " + mContext.getString(R.string.sql_column_alert_type) + " " + mContext.getString(R.string.sql_column_alert_type_type) + " NOT NULL "
                 + ", " + mContext.getString(R.string.sql_column_alert_detail) + " " + mContext.getString(R.string.sql_column_alert_detail_type)
+                + ", " + mContext.getString(R.string.sql_column_alert_isOn) + " " + mContext.getString(R.string.sql_column_alert_isOn_type)
                 + ");"
                 ;
         db.execSQL(createTableSQL);

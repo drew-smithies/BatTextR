@@ -34,4 +34,15 @@
         android:layout_below="@id/list_item"
         tools:text="(903) 819 8839"
         />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/list_item_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingRight="@dimen/list_switch_rightPadding"
+        android:paddingTop="@dimen/list_switch_topBotPadding"
+        android:paddingBottom="@dimen/list_switch_topBotPadding"
+        android:checked="true"
+        />
 </RelativeLayout>
