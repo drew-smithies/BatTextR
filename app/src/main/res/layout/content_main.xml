@@ -1,5 +1,5 @@
 <!-- A RecyclerView with some commonly used attributes -->
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
@@ -28,7 +28,7 @@
         android:scrollbars="vertical"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-
+        android:layout_below="@id/alert_header"
         />
 
-</LinearLayout>
+</RelativeLayout>

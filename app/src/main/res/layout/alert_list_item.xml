@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:paddingRight="@dimen/list_switch_rightPadding"
+        android:paddingLeft="@dimen/list_switch_rightPadding"
         android:paddingTop="@dimen/list_switch_topBotPadding"
         android:paddingBottom="@dimen/list_switch_topBotPadding"
         android:checked="true"

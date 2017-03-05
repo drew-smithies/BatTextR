@@ -21,7 +21,7 @@
     <dimen name="list_text_topBotPadding">16dp</dimen>
     <dimen name="list_text_middlePadding">2dp</dimen>
     <dimen name="list_maintext_leftPadding">16dp</dimen>
-    <dimen name="list_maintext_rightPadding">16dp</dimen>
+    <dimen name="list_maintext_rightPadding">72dp</dimen>
 
     <!-- List tile switch -->
     <dimen name="list_switch_rightPadding">16dp</dimen>
