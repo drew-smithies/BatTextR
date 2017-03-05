@@ -7,12 +7,19 @@
     <!-- Recycler dimensions -->
     <dimen name="rec_topPadding">8dp</dimen>
 
-    <!-- List dimensions -->
+    <!-- List header dimensions -->
+    <dimen name="list_header_height">48dp</dimen>
+    <dimen name="list_header_leftPadding">16dp</dimen>
+    <dimen name="list_header_textSize">18sp</dimen>
+    <dimen name="list_header_topBotPadding">14dp</dimen>
+    <dimen name="list_header_elevation">2dp</dimen>
+
+    <!-- List tile dimentions -->
     <dimen name="list_height">72dp</dimen>
     <dimen name="list_text_size">16sp</dimen>
     <dimen name="list_text_sub_size">14sp</dimen>
-    <dimen name="list_title_leftPadding">16dp</dimen>
-    <dimen name="list_text_topBotPadding">20dp</dimen>
+    <dimen name="list_text_topBotPadding">16dp</dimen>
+    <dimen name="list_text_middlePadding">2dp</dimen>
     <dimen name="list_maintext_leftPadding">16dp</dimen>
     <dimen name="list_maintext_rightPadding">16dp</dimen>
 </resources>

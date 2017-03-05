@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_height"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <TextView
         android:id="@+id/list_item"
@@ -17,7 +18,7 @@
         android:paddingLeft="@dimen/list_maintext_leftPadding"
         android:paddingRight="@dimen/list_maintext_rightPadding"
         android:paddingTop="@dimen/list_text_topBotPadding"
-        android:paddingBottom="0dp"
+        android:paddingBottom="@dimen/list_text_middlePadding"
         tools:text="Kirstie Carter"
         />
 
@@ -29,6 +30,7 @@
         android:textSize="@dimen/list_text_sub_size"
         android:paddingLeft="@dimen/list_maintext_leftPadding"
         android:paddingRight="@dimen/list_maintext_rightPadding"
+        android:paddingBottom="@dimen/list_text_topBotPadding"
         android:layout_below="@id/list_item"
         tools:text="(903) 819 8839"
         />
