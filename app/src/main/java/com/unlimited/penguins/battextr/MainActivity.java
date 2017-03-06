@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -261,6 +264,16 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(getString(R.string.info_title));
         builder.setMessage(getString(R.string.info_message));
         builder.show();
+    }
+
+    public float getBatteryPercent() {
+        Intent batteryIntent = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        int batteryLevel = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int batteryScale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        final float batteryPercent = batteryLevel / (float) batteryScale;
+        Log.d(TAG, "Battery p = l/s | " + batteryPercent + " = " + batteryLevel + "/" + batteryScale);
+
+        return batteryPercent;
     }
 
 

@@ -32,11 +32,11 @@ public class BatteryLowReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent intent) {
 
-        Intent batteryIntent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        int batteryLevel = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int batteryScale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+/*        // Intent batteryIntent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        int batteryLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int batteryScale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
         final float batteryPercent = batteryLevel / (float) batteryScale;
-        Log.d(TAG, "Battery p = l/s | " + batteryPercent + " = " + batteryLevel + "/" + batteryScale);
+        Log.d(TAG, "Battery p = l/s | " + batteryPercent + " = " + batteryLevel + "/" + batteryScale);*/
 
         final PendingResult pendingResult = goAsync();
         AsyncTask<String, Integer, String> asyncTask = new AsyncTask<String, Integer, String>() {
@@ -55,7 +55,7 @@ public class BatteryLowReceiver extends BroadcastReceiver {
 
                     // Send SMS for each item
                     for (AlertItem item : list) {
-                        if (batteryPercent < 0.05 && !item.getDetail().equals("") && item.isAlertOn()) {
+                        if (!item.getDetail().equals("") && item.isAlertOn()) {
                             smsManager.sendTextMessage(item.getDetail(), null, "ID: " + item.getID() + " " + context.getString(R.string.sms_body), null, null);
                             wasSent = true;
                             sentCount++;
