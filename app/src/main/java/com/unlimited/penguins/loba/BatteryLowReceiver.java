@@ -1,4 +1,4 @@
-package com.unlimited.penguins.battextr;
+package com.unlimited.penguins.loba;
 
 import android.Manifest;
 import android.app.NotificationManager;
@@ -6,14 +6,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.BatteryManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.SmsManager;
-import android.util.Log;
 
 import java.util.ArrayList;
 

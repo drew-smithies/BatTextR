@@ -1,4 +1,4 @@
-package com.unlimited.penguins.battextr;
+package com.unlimited.penguins.loba;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.unlimited.penguins.battextr", appContext.getPackageName());
+        assertEquals("com.unlimited.penguins.loba", appContext.getPackageName());
     }
 }

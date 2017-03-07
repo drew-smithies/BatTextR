@@ -1,4 +1,4 @@
-package com.unlimited.penguins.battextr;
+package com.unlimited.penguins.loba;
 
 import org.junit.Test;
 

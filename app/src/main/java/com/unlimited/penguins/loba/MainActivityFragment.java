@@ -1,4 +1,4 @@
-package com.unlimited.penguins.battextr;
+package com.unlimited.penguins.loba;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
